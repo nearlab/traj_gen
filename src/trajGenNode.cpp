@@ -40,7 +40,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
 
 // For attitude: Look up SLURP method (vary angle from initial to final given values 0 - 1) 
   //               Perhaps vary 0 to 1 nonlinearly in time to get smooth tr
-bool callbackAttitudeTraj(nearlab::msgs::attitude_traj::Request& req, nearlab_msgs::attitude_traj::Response& res){
+bool callbackAttitudeTraj(nearlab_msgs::attitude_traj::Request& req, nearlab_msgs::attitude_traj::Response& res){
 //   theta = acos(dq(4));
 // n = dq(1:3)/norm(dq(1:3));
 // dqHalf = [n*sin(.5*theta);cos(.5*theta)];
