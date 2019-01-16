@@ -17,7 +17,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     vEnd(i) = req.vEnd[i];
   }
 
-  TrajParams params(req.dt,req.sc_mass.req.sc_thrust,req.time_const,req.dist_const,rOrb,req.grav_param);
+  TrajParams params(req.dt,req.sc_mass,req.sc_thrust,req.time_const,req.dist_const,rOrb,req.grav_param);
   
   // Other stuff
   Waypoint wpStart(rStart,vStart,req.tStart);

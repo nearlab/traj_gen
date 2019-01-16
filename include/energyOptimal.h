@@ -10,7 +10,7 @@ class Waypoint{
 public:
   Eigen::Vector3d r,v;
   double t;
-  Waypoint(const Eigen::Vector3d &r, const Eigen::Vector3d &v, const double &t):r(r),v(v),t(t);
+  Waypoint(const Eigen::Vector3d &r, const Eigen::Vector3d &v, const double &t):r(r),v(v),t(t){}
 };
 //Given multiple waypoints with first and last having velocities, generate the optimal trajectory
 void energyOptimalWps(Eigen::Matrix3Xd control, const Waypoint* wps, const double* times, const int len, const TrajParams& p);
