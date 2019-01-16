@@ -9,7 +9,7 @@ void optimalVelocityAlg(Eigen::Matrix3Xd& control, const Waypoint* wps, const in
 
 }
 //Given two waypoints with start and end velocities, generate the optimal trajectory.
-void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const TrajParams& p){
+void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const int& intervals, const TrajParams& p){
   double t0 = start.t;
   double tf = end.t;
   double tspan = tf-t0;
@@ -23,14 +23,14 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,6);
   B.block(3,3,3,3) = Eigen::MatrixXd::Identity(3,3)*( p.F*p.tau*p.tau/p.m/p.nu);
   
-  int intervals = (int)round(tspan/p.dt) + 1;
+  double dt = tspan/(intervals-1);
   control = Eigen::MatrixXd(6,intervals);
 
   Eigen::MatrixXd W; //Controllability Gramian
   integrateGramian(W,A,B,t0,tf,1000);
   Eigen::MatrixXd Winv = W.inverse();
 
-  Eigen::MatrixXd stm = (A*p.dt).exp();
+  Eigen::MatrixXd stm = (A*dt).exp();
   Eigen::MatrixXd stm_tf = (A*tspan).exp();
   Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
   Eigen::MatrixXd sum = Eigen::MatrixXd::Zero(stm.rows(),stm.cols());

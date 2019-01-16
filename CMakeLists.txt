@@ -31,7 +31,6 @@ include_directories(
 
 
 add_executable(traj_gen_node
-               src/trajParams.cpp
                src/energyOptimal.cpp
                src/trajGenNode.cpp)
 

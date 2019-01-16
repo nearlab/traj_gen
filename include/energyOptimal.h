@@ -17,7 +17,7 @@ void energyOptimalWps(Eigen::Matrix3Xd control, const Waypoint* wps, const doubl
 //Given multiple waypoints "" "", genereate the optimal interim velocities
 void optimalVelocityAlg(Eigen::Matrix3Xd control, const Waypoint* wps, int len, const TrajParams& p);
 //Given two waypoints with start and end velocities, generate the optimal trajectory.
-void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const TrajParams& p);
+void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const int& intervals, const TrajParams& p);
 
 void integrateGramian(Eigen::MatrixXd& W, const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const double& t0, const double& tf, const int& intervals);
 
