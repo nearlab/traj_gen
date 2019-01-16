@@ -21,7 +21,7 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
        0, 0, 0, -2*p.n, 0, 0,
        0, 0, -p.n*p.n, 0, 0, 0;
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,6);
-  B.block(3,3,3,3) = p.F*p.tau*p.tau/p.m/p.nu;
+  B.block(3,3,3,3) = Eigen::MatrixXd::Identity(3,3)*( p.F*p.tau*p.tau/p.m/p.nu);
   
   int intervals = (int)round(tspan/p.dt) + 1;
   control = Eigen::MatrixXd(6,intervals);
