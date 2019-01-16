@@ -5,6 +5,7 @@
 #include "trajParams.h"
 #include "energyOptimal.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
+#include "nearlab_msgs/attitude_traj.h"
 
 bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, nearlab_msgs::energy_optimal_traj::Response& res){
   // Make TrajParams object
