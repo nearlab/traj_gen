@@ -24,7 +24,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   Waypoint wpEnd(rEnd,vEnd,req.tEnd);
   Eigen::MatrixXd control;
 
-  energyOptimal.energyOptimal(control,wpStart,wpEnd,params);
+  energyOptimal(control,wpStart,wpEnd,params);
   
   for(int i=0;i<control.cols();i++){
     res.control_x.push_back(control(3,i));

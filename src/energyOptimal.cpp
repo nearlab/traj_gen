@@ -48,11 +48,11 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   }
 }
 
-void integrateGramian(Eigen::MatrixXd& W, const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const double& t0, const double& tf, const int& intervals)
+void integrateGramian(Eigen::MatrixXd& W, const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const double& t0, const double& tf, const int& intervals){
   double dt = (tf-t0)/(intervals-1);
   Eigen::MatrixXd stm = (A*dt).exp();
-  Eigen::MatrixXd stm_i = Eigen::Matrix::Identity(stm.rows(),stm.cols());
-  Eigen::MatrixXd sum = Eigen::Matrix::Zeros(stm.rows(),stm.cols());
+  Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
+  Eigen::MatrixXd sum = Eigen::MatrixXd::Zeros(stm.rows(),stm.cols());
   for(int i=0;i<intervals;i++){ //Quadrature, I'm lazy
     Eigen::MatrixXd rect;
     stm_i *= stm; 
