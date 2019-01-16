@@ -14,11 +14,11 @@ double mu;//Gravitational Parameter for Earth kg*m^2/s^3
 Eigen::Vector3d r;//Orbital radius
 double n;//Mean rate
 TrajParams():dt(1),m(100),F(.1),tau(100),nu(300),mu(3.986e14){
-  r << 42164000,0,0;
-  this.n = sqrt(3.986e14/pow(42164000,3));
+  this->r << 42164000,0,0;
+  this->n = sqrt(3.986e14/pow(42164000,3));
 }
 TrajParams(const double& dt, const double& m, const double& F, const double& tau, const double& nu, const Eigen::Vector3d& r, const double& mu=3.986e14):dt(dt),m(m),F(F),tau(tau),nu(nu),r(r),mu(mu){
-  this.n = sqrt(mu/pow(r.norm(),3));
+  this->n = sqrt(mu/pow(r.norm(),3));
 }
 
 

@@ -21,7 +21,7 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
        0, 0, 0, -2*p.n, 0, 0,
        0, 0, -p.n*p.n, 0, 0, 0;
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,6);
-  B.block(3,3,3,3) = p.F*p.tau^2/p.m/p.nu;
+  B.block(3,3,3,3) = p.F*p.tau*p.tau/p.m/p.nu;
   
   int intervals = (int)round(tspan/p.dt) + 1;
   control = Eigen::MatrixXd(6,intervals);
@@ -33,7 +33,7 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   Eigen::MatrixXd stm = (A*p.dt).exp();
   Eigen::MatrixXd stm_tf = (A*tspan).exp();
   Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
-  Eigen::MatrixXd sum = Eigen::MatrixXd::Zeros(stm.rows(),stm.cols());
+  Eigen::MatrixXd sum = Eigen::MatrixXd::Zero(stm.rows(),stm.cols());
 
   Eigen::VectorXd x0 = Eigen::VectorXd::Zero(6);
   x0.head(3) << start.r;
@@ -52,7 +52,7 @@ void integrateGramian(Eigen::MatrixXd& W, const Eigen::MatrixXd& A, const Eigen:
   double dt = (tf-t0)/(intervals-1);
   Eigen::MatrixXd stm = (A*dt).exp();
   Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
-  Eigen::MatrixXd sum = Eigen::MatrixXd::Zeros(stm.rows(),stm.cols());
+  Eigen::MatrixXd sum = Eigen::MatrixXd::Zero(stm.rows(),stm.cols());
   for(int i=0;i<intervals;i++){ //Quadrature, I'm lazy
     Eigen::MatrixXd rect;
     stm_i *= stm; 
