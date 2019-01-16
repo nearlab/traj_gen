@@ -3,6 +3,7 @@
 #include <Eigen/Dense>
 
 #include "trajParams.h"
+#include "energyOptimal.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
 
 bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, nearlab_msgs::energy_optimal_traj::Response& res){
@@ -46,9 +47,6 @@ int main(int argc, char** argv){
   // nh.getParam("initial_radius_x",rx);
   // nh.getParam("initial_radius_y",ry);
   // nh.getParam("initial_radius_z",rz);
-
-  // Make TrajParams object
-  params = TrajParams(dt,m,F,tau,nu,r,mu);
 
   // Advertise service
   ros::ServiceServer outputFormatServer = nh.advertiseService("/traj_gen/energy_optimal_traj",callbackEnergyOptimalTraj);
