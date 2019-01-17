@@ -11,6 +11,11 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   // Make TrajParams object
   int intervals = req.intervals;
   Eigen::Vector3d rOrb, rStart, rEnd, vStart, vEnd;
+  rOrb = Eigen::VectorXd::Zero(3);
+  rStart = Eigen::VectorXd::Zero(3);
+  rEnd = Eigen::VectorXd::Zero(3);
+  vStart = Eigen::VectorXd::Zero(3);
+  vEnd = Eigen::VectorXd::Zero(3);
   for(int i=0;i<3;i++){
     rOrb(i) = req.rOrb[i];
     rStart(i) = req.rStart[i];
