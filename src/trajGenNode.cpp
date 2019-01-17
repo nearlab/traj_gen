@@ -42,7 +42,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   ROS_INFO("Starting trajectory propagation");
   cwProp(stateHist,rStart,vStart,control,req.tEnd,intervals,params);
   ROS_INFO("Finished trajectory propagation");
-
+  ROS_INFO_STREAM("FINAL STATE: "<<stateHist(0,intervals-1)<<", "<<stateHist(1,intervals-1));
   double dt = (req.tEnd-req.tStart)/(intervals-1);
   for(int i=0;i<intervals;i++){
     res.rx.push_back(stateHist(0,i));
