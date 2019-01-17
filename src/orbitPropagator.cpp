@@ -5,8 +5,8 @@
 
 void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::Vector3d& v0, const Eigen::MatrixXd& control, const double& tf, const int& intervals, const TrajParams& p){
   Eigen::VectorXd state = Eigen::VectorXd::Zero(6);
-  state.head(3) = r0.head(3);
-  state.tail(3) = v0.head(3);
+  state.head(3) = r0.head(3)/p.nu;
+  state.tail(3) = v0.head(3)*p.tau/p.nu;
   double dt = tf/(intervals-1);
   double t = 0;
 
@@ -17,6 +17,8 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       t += dt;
   }
   stateHist.col(intervals-1) << state;
+  stateHist *= p.nu;
+  stateHist.block(3,0,3,intervals) /= p.tau;
 }
 
 // Finds value of y for a given x using step size h 
