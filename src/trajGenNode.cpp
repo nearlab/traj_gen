@@ -18,16 +18,16 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     vStart(i) = req.vStart[i];
     vEnd(i) = req.vEnd[i];
   }
-  
+  ROS_INFO("Created vectors");
   TrajParams params(req.sc_mass,req.sc_thrust,req.time_const,req.dist_const,rOrb,req.grav_param);
-  
+  ROS_INFO("Created Params");
   // Other stuff
   Waypoint wpStart(rStart,vStart,req.tStart);
   Waypoint wpEnd(rEnd,vEnd,req.tEnd);
   Eigen::MatrixXd control;
-
+  ROS_INFO("Starting trajectory generation");
   energyOptimal(control,wpStart,wpEnd,intervals,params);
-  
+  ROS_INFO("Finished trajectory generation");
   double dt = (req.tEnd-req.tStart)/(intervals-1);
 
   for(int i=0;i<intervals;i++){
