@@ -29,7 +29,7 @@ void rungeKutta(Eigen::VectorXd& y, const double& t0, const double& tf, const do
     int n = (int)((tf - t0) / dt); 
     double t = t0;
 
-    Eigen::Vector3d k1, k2, k3, k4; 
+    Eigen::VectorXd k1, k2, k3, k4; 
   
     for (int i=1; i<=n; i++) { 
         // Apply Runge Kutta Formulas to find 
