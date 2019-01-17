@@ -5,15 +5,15 @@
 
 void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::Vector3d& v0, const Eigen::MatrixXd& control, const double& tf, const int& intervals, const TrajParams& p){
   Eigen::VectorXd state = Eigen::VectorXd::Zero(6);
-  state.head(3) = r0;
-  state.tail(3) = v0;
+  state.head(3) = r0.head(3);
+  state.tail(3) = v0.head(3);
   double dt = tf/(intervals-1);
   double t = 0;
 
   for(int i=0;i<intervals-1;i++){
       stateHist.col(i) << state;
       Eigen::VectorXd u = control.col(i);
-      rungeKutta(cwDeriv,state,t,t+dt,dt/4,u,p);
+      rungeKutta(state,t,t+dt,dt/4,u,p,cwDeriv);
       t += dt;
   }
   stateHist.col(intervals-1) << state;
@@ -22,8 +22,8 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
 // Finds value of y for a given x using step size h 
 // and initial value y0 at x0. 
 // u is the control input over that timestep
-void rungeKutta(Eigen::VectorXd (*dydt)(const double&, const Eigen::VectorXd&, const Eigen::VectorXd&, const TrajParams&), Eigen::VectorXd& y, 
-                const double& t0, const double& tf, const double& dt, const Eigen::VectorXd& u, const TrajParams& p){
+void rungeKutta(Eigen::VectorXd& y, const double& t0, const double& tf, const double& dt, const Eigen::VectorXd& u, const TrajParams& p,
+                Eigen::VectorXd (*dydt)(const double&, const Eigen::VectorXd&, const Eigen::VectorXd&, const TrajParams&)){
     // Count number of iterations using step size or 
     // step height h 
     int n = (int)((tf - t0) / dt); 

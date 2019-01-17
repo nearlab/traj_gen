@@ -8,8 +8,8 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
 
 // Modified from Geeksforgeeks.org
 // Note that y is modified to provide the answer rather than returning anything
-void rungeKutta(Eigen::VectorXd (*dydt)(const double&, const Eigen::VectorXd&, const Eigen::VectorXd&, const TrajParams&), Eigen::VectorXd& y, 
-                const double& t0, const double& tf, const double& dt, const TrajParams& p);
+void rungeKutta(Eigen::VectorXd& y, const double& t0, const double& tf, const double& dt, const TrajParams& p,
+                Eigen::VectorXd (*dydt)(const double&, const Eigen::VectorXd&, const Eigen::VectorXd&, const TrajParams&));
 
 Eigen::VectorXd cwDeriv(const double& t, const Eigen::VectorXd& state, const Eigen::VectorXd& u, const TrajParams& p);
 
