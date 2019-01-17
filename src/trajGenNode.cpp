@@ -29,7 +29,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   // Other stuff
   Waypoint wpStart(rStart,vStart,req.tStart);
   Waypoint wpEnd(rEnd,vEnd,req.tEnd);
-  Eigen::MatrixXd control;
+  Eigen::MatrixXd control = Eigen::MatrixXd::Zero(6,intervals);
   ROS_INFO("Starting trajectory generation");
   energyOptimal(control,wpStart,wpEnd,intervals,params);
   ROS_INFO("Finished trajectory generation");

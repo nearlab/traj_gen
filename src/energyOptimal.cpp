@@ -24,9 +24,8 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   B.block(3,3,3,3) = Eigen::MatrixXd::Identity(3,3)*( p.F*p.tau*p.tau/p.m/p.nu);
   
   double dt = tspan/(intervals-1);
-  control = Eigen::MatrixXd(6,intervals);
 
-  Eigen::MatrixXd W; //Controllability Gramian
+  Eigen::MatrixXd W = Eigen::MatrixXd::Identity(6,6); //Controllability Gramian
   integrateGramian(W,A,B,t0,tf,1000);
   Eigen::MatrixXd Winv = W.inverse();
 
