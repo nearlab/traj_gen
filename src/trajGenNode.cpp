@@ -29,16 +29,27 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   // Other stuff
   Waypoint wpStart(rStart,vStart,req.tStart);
   Waypoint wpEnd(rEnd,vEnd,req.tEnd);
+
   Eigen::MatrixXd control = Eigen::MatrixXd::Zero(6,intervals);
+
   ROS_INFO("Starting trajectory generation");
   energyOptimal(control,wpStart,wpEnd,intervals,params);
   ROS_INFO("Finished trajectory generation");
-  double dt = (req.tEnd-req.tStart)/(intervals-1);
 
+  Eigen::MatrixXd stateHist = Eigen::MatrixXd::Zero(6,intervals);
+
+  ROS_INFO("Starting trajectory propagation");
+  cwProp(stateHist,rStart,vStart,control,req.tEnd,intervals,params);
+  ROS_INFO("Finished trajectory propagation");
+
+  double dt = (req.tEnd-req.tStart)/(intervals-1);
   for(int i=0;i<intervals;i++){
-    res.control_x.push_back(control(3,i));
-    res.control_y.push_back(control(4,i));
-    res.control_z.push_back(control(5,i));
+    res.rx.push_back(stateHist(0,i));
+    res.ry.push_back(stateHist(1,i));
+    res.rz.push_back(stateHist(2,i));
+    res.vx.push_back(stateHist(3,i));
+    res.vy.push_back(stateHist(4,i));
+    res.vz.push_back(stateHist(5,i));
     res.times.push_back(dt*i);
   }
   return true;
