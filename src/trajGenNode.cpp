@@ -4,6 +4,7 @@
 
 #include "trajParams.h"
 #include "energyOptimal.h"
+#include "orbitPropagator.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
 #include "nearlab_msgs/attitude_traj.h"
 
