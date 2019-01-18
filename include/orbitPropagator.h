@@ -1,6 +1,6 @@
 #include <Eigen/Dense>
 #include "trajParams.h"
-//#include <ros/ros.h>
+#include <ros/ros.h>
 
 #ifndef ORBIT_PROPAGATOR_H
 #define ORBIT_PROPAGATOR_H
