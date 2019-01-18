@@ -13,19 +13,17 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   double err = 1e-7;
   int iter = 0;
   double s = 1;
-  while(iter<intervals){
-      Eigen::VectorXd u = control.col(iter);
+  while(iter<intervals-1){
+      double tIterLow = std::floor(t/dtConst);
+      double tIterHigh = std::ceil(t/dtConst);
+      Eigen::VectorXd u = (t/dtConst-tIterLow)*control.col((int)tIterLow) + (tIterHigh-t/dtConst)*control.col((int)tIterHigh);
       Eigen::VectorXd state4 = state;
       Eigen::VectorXd state5 = state;
       rungeKutta(state4,t,t+dt,dt,u,p,cwDeriv,4);
       rungeKutta(state5,t,t+dt,dt,u,p,cwDeriv,5);
       
-     
       ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
       
- 
-
-        
       double sLast = s;  
       s = pow(err*dt/2/(state5-state4).norm(),.25); 
       if(std::isinf(s)){
@@ -46,7 +44,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
 
       t += dt;
       
-      dt = std::min(1.0,s*dt);
+      dt = std::min(dtConst,s*dt);
   }
   stateHist.col(intervals-1) << state;
   stateHist *= p.nu;
