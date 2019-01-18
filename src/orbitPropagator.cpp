@@ -21,8 +21,8 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   stateHist.block(3,0,3,intervals) /= p.tau;
 }
 
-// Finds value of y for a given x using step size h 
-// and initial value y0 at x0. 
+// Finds value of y for a given t using step size dt
+// and initial value y at t0. 
 // u is the control input over that timestep
 void rungeKutta(Eigen::VectorXd& y, const double& t0, const double& tf, const double& dt, const Eigen::VectorXd& u, const TrajParams& p,
                 Eigen::VectorXd (*dydt)(const double&, const Eigen::VectorXd&, const Eigen::VectorXd&, const TrajParams&)){

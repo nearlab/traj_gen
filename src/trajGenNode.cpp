@@ -51,6 +51,9 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     res.vx.push_back(stateHist(3,i));
     res.vy.push_back(stateHist(4,i));
     res.vz.push_back(stateHist(5,i));
+    res.ux.push_back(control(3,i));
+    res.uy.push_back(control(4,i));
+    res.uz.push_back(control(5,i));
     res.times.push_back(dt*i);
   }
   return true;
