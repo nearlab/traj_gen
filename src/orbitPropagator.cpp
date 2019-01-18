@@ -7,7 +7,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   Eigen::VectorXd state = Eigen::VectorXd::Zero(6);
   state.head(3) = r0.head(3)/p.nu;
   state.tail(3) = v0.head(3)*p.tau/p.nu;
-  double dt = tf/(intervals-1)/100;
+  double dt = tf/(intervals)/100;
   double dtConst = dt*100;
   double t = 0;
   double err = 1e-7;
@@ -22,7 +22,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       rungeKutta(state4,t,t+dt,dt,u,p,cwDeriv,4);
       rungeKutta(state5,t,t+dt,dt,u,p,cwDeriv,5);
       
-      ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
+      ROS_INFO_STREAM("Time: " << t <<"\titer:"<<iter<< "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
       
       double sLast = s;  
       s = pow(err*dt/2/(state5-state4).norm(),.25); 
@@ -35,7 +35,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
         continue;
       }
       
-      double tStar = (iter+1)*dtConst;
+      double tStar = (iter)*dtConst;
       if(t>tStar){
         Eigen::VectorXd stateFixed = ((t-tStar)*state5 + (tStar-(t-dt/sLast))*state)/(dt/sLast);
         stateHist.col(iter++) << stateFixed;
