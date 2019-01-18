@@ -29,7 +29,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       double sLast = s;  
       s = pow(err*dt/2/(state5-state4).norm(),.25); 
       if(std::isinf(s)){
-        s = 1.2;
+        s = 1.2;//Heuristic
       } 
       
       if((state5-state4).cwiseAbs().minCoeff()>err){
@@ -38,15 +38,15 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       }
       
       double tStar = (iter+1)*dtConst;
-      if(t>tStar{
-        Eigen::VectorXd stateFixed = (t-tStar)*state5 + (tStar-(t-dt/sLast))
+      if(t>tStar){
+        Eigen::VectorXd stateFixed = ((t-tStar)*state5 + (tStar-(t-dt/sLast))*state)/(dt/sLast);
         stateHist.col(iter++) << stateFixed;
       }
       state = state5;
 
       t += dt;
       
-      dt = std::min(1,s*dt);
+      dt = std::min(1.0,s*dt);
   }
   stateHist.col(intervals-1) << state;
   stateHist *= p.nu;
