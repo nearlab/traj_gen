@@ -13,7 +13,11 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   for(int i=0;i<intervals-1;i++){
       stateHist.col(i) << state;
       Eigen::VectorXd u = control.col(i);
-      rungeKutta(state,t,t+dt,dt/4,u,p,cwDeriv);
+      if(i<5 || i>intervals-6){
+      	rungeKutta(state,t,t+dt,dt/200,u,p,cwDeriv);
+      }else{
+        rungeKutta(state,t,t+dt,dt/200,u,p,cwDeriv);
+      }
       t += dt;
   }
   stateHist.col(intervals-1) << state;
@@ -62,6 +66,8 @@ Eigen::VectorXd cwDeriv(const double& t, const Eigen::VectorXd& y, const Eigen::
     Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,6);
     B.block(3,3,3,3) = Eigen::MatrixXd::Identity(3,3)*( p.F*p.tau*p.tau/p.m/p.nu);
 
-    yDot = A*y + B*u;
+    Eigen::VectorXd v = u;
+    v(3) = -v(3);
+    yDot = A*y + B*v;
     return yDot;
 }

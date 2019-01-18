@@ -7,7 +7,7 @@ tStart: 0.0
 tEnd: 40000.0
 intervals: 40000
 grav_param: 398600000000000.0
-dist_const: 300.0
+dist_const: 1
 sc_thrust: 0.1
-time_const: 40000.0
-sc_mass: 100.0" >> test.out
+time_const: 1
+sc_mass: 100.0" 
