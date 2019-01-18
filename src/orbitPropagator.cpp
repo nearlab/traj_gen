@@ -12,7 +12,6 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   double t = 0;
   double err = 1e-7;
   int iter = 0;
-  bool writeNext = true;
   double s = 1;
   while(iter<intervals){
       Eigen::VectorXd u = control.col(iter);
@@ -25,13 +24,10 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
       
  
-      if(writeNext){
-        stateHist.col(iter++) << state5;
-        writeNext = false;
+
         
-      }else{
-        s = pow(err*dt/2/(state5-state4).norm(),.25); 
-      }
+      double sLast = s;  
+      s = pow(err*dt/2/(state5-state4).norm(),.25); 
       if(std::isinf(s)){
         s = 1.2;
       } 
@@ -40,14 +36,17 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
         dt = s*dt;
         continue;
       }
-      state = state5;
-      t += dt;
-      if(t>(iter+1)*dtConst){
-        
-        t = (iter+1)*dtConst;
-	      writeNext = true;
+      
+      double tStar = (iter+1)*dtConst;
+      if(t>tStar{
+        Eigen::VectorXd stateFixed = (t-tStar)*state5 + (tStar-(t-dt/sLast))
+        stateHist.col(iter++) << stateFixed;
       }
-      dt = s*dt;
+      state = state5;
+
+      t += dt;
+      
+      dt = std::min(1,s*dt);
   }
   stateHist.col(intervals-1) << state;
   stateHist *= p.nu;
