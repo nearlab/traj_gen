@@ -52,9 +52,9 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     res.vx.push_back(stateHist(3,i));
     res.vy.push_back(stateHist(4,i));
     res.vz.push_back(stateHist(5,i));
-    res.ux.push_back(control(3,i));
-    res.uy.push_back(control(4,i));
-    res.uz.push_back(control(5,i));
+    //res.ux.push_back(control(3,i));
+    //res.uy.push_back(control(4,i));
+    //res.uz.push_back(control(5,i));
     res.times.push_back(dt*i);
   }
   return true;
@@ -76,7 +76,7 @@ bool callbackAttitudeTraj(nearlab_msgs::attitude_traj::Request& req, nearlab_msg
     Eigen::Vector4d dqPartial = Eigen::VectorXd::Zero(4);
     dqPartial.head(3) << normal*sin(ratio*theta);
     dqPartial(3) = cos(ratio*theta);
-    Eigen::VectorXd qProp = quatMath.quatRot(qOld,dqPartial);
+    Eigen::VectorXd qProp = quatRot(q0,dqPartial);
     res.qx.push_back(qProp(0));
     res.qy.push_back(qProp(1));
     res.qz.push_back(qProp(2));
@@ -101,6 +101,7 @@ int main(int argc, char** argv){
 
   // Advertise service
   ros::ServiceServer energyOptimalServer = nh.advertiseService("/traj_gen/energy_optimal_traj",callbackEnergyOptimalTraj);
+  ros::ServiceServer attitudeServer = nh.advertiseService("/traj_gen/attitude_traj",callbackAttitudeTraj);
   ROS_INFO("Ready to generate trajectories.");
   ros::spin();
 }

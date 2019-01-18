@@ -33,7 +33,8 @@ include_directories(
 add_executable(traj_gen_node
                src/energyOptimal.cpp
                src/trajGenNode.cpp
-               src/orbitPropagator.cpp)
+               src/orbitPropagator.cpp
+               src/quatMath.cpp)
 
 set(EXEC_LIST traj_gen_node)
 foreach(EXEC_FILE ${EXEC_LIST})
