@@ -18,8 +18,12 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       Eigen::VectorXd state5 = state;
       rungeKutta(state4,t,t+dt,dt,u,p,cwDeriv,4);
       rungeKutta(state5,t,t+dt,dt,u,p,cwDeriv,5);
+      
+      ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm());
+
       double s = pow(err*dt/2/(state5-state4).norm(),.25);
-      dt = s*dt;
+      dt = s*dt;  
+      
       if((state5-state4).cwiseAbs().minCoeff()>err){
         i--;
         continue;
