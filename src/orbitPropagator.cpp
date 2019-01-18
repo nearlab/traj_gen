@@ -8,31 +8,43 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   state.head(3) = r0.head(3)/p.nu;
   state.tail(3) = v0.head(3)*p.tau/p.nu;
   double dt = tf/(intervals-1)/100;
+  double dtConst = dt*100;
   double t = 0;
-  double err = 1e-10;
-
-  for(int i=0;i<intervals-1;i++){
-      stateHist.col(i) << state;
-      Eigen::VectorXd u = control.col(i);
+  double err = 1e-7;
+  int iter = 0;
+  bool writeNext = true;
+  while(iter<intervals){
+      Eigen::VectorXd u = control.col(iter);
       Eigen::VectorXd state4 = state;
       Eigen::VectorXd state5 = state;
       rungeKutta(state4,t,t+dt,dt,u,p,cwDeriv,4);
       rungeKutta(state5,t,t+dt,dt,u,p,cwDeriv,5);
       
-      ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() << "\nState4\n"<<state4<<"\nState5\n"<<state5);
-
+     
+      ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
+    
       double s = pow(err*dt/2/(state5-state4).norm(),.25); 
-      if(isinf(s)){
-        s = 10;
+ 
+      if(writeNext){
+        stateHist.col(iter++) << state5;
+        writeNext = false;
+      }else{
+     
+      if(std::isinf(s)){
+        s = 1.2;
       } 
       
       if((state5-state4).cwiseAbs().minCoeff()>err){
         dt = s*dt;
-        i--;
         continue;
       }
       state = state5;
       t += dt;
+      if(t>(iter+1)*dtConst){
+        t = (iter+1)*dtConst;
+	
+        writeNext = true;
+      }
       dt = s*dt;
   }
   stateHist.col(intervals-1) << state;
