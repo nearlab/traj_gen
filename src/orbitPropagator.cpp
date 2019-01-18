@@ -19,7 +19,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       rungeKutta(state4,t,t+dt,dt,u,p,cwDeriv,4);
       rungeKutta(state5,t,t+dt,dt,u,p,cwDeriv,5);
       
-      ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm());
+      //ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() << "\nState4\n"<<state4<<"\nState5\n"<<state5);
 
       double s = pow(err*dt/2/(state5-state4).norm(),.25);
       dt = s*dt;  
@@ -62,7 +62,7 @@ void rungeKutta(Eigen::VectorXd& y, const double& t0, const double& tf, const do
         if(order == 4){
             y = y + 25.0/216*k1 + 1408.0/2565*k3 + 2197.0/4104*k4 - 1.0/5*k5;
         }else{
-            y = y + 16.0/135*k1 + 6656.0/12825*k3 + 28561.0*56430*k4 -9.0/50*k5 + 2.0/55*k6;
+            y = y + 16.0/135*k1 + 6656.0/12825*k3 + 28561.0/56430*k4 -9.0/50*k5 + 2.0/55*k6;
         }
   
         // Update next value of x 
