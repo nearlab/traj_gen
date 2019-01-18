@@ -13,6 +13,7 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
   double err = 1e-7;
   int iter = 0;
   bool writeNext = true;
+  double s = 1;
   while(iter<intervals){
       Eigen::VectorXd u = control.col(iter);
       Eigen::VectorXd state4 = state;
@@ -22,14 +23,15 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       
      
       ROS_INFO_STREAM("Time: " << t << "\tdelta-t: "<< dt <<"\tDifference: " << (state5-state4).norm() <<"\nState4\n"<<state4<<"\nState5\n"<<state5);
-    
-      double s = pow(err*dt/2/(state5-state4).norm(),.25); 
+      
  
       if(writeNext){
         stateHist.col(iter++) << state5;
         writeNext = false;
+        
       }else{
-     
+        s = pow(err*dt/2/(state5-state4).norm(),.25); 
+      }
       if(std::isinf(s)){
         s = 1.2;
       } 
@@ -41,9 +43,9 @@ void cwProp(Eigen::MatrixXd& stateHist, const Eigen::Vector3d& r0, const Eigen::
       state = state5;
       t += dt;
       if(t>(iter+1)*dtConst){
+        
         t = (iter+1)*dtConst;
-	
-        writeNext = true;
+	      writeNext = true;
       }
       dt = s*dt;
   }
