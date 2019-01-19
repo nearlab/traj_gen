@@ -7,6 +7,7 @@
 #include "orbitPropagator.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
 #include "nearlab_msgs/attitude_traj.h"
+#include "quatMath.h"
 
 bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, nearlab_msgs::energy_optimal_traj::Response& res){
   // Make TrajParams object
@@ -62,11 +63,26 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
 // For attitude: Look up SLURP method (vary angle from initial to final given values 0 - 1) 
   //               Perhaps vary 0 to 1 nonlinearly in time to get smooth tr
 bool callbackAttitudeTraj(nearlab_msgs::attitude_traj::Request& req, nearlab_msgs::attitude_traj::Response& res){
-//   theta = acos(dq(4));
-// n = dq(1:3)/norm(dq(1:3));
-// dqHalf = [n*sin(.5*theta);cos(.5*theta)];
-// qProp = quatMath.quatRot(qOld,dqHalf);
-  return false;
+  int intervals = req.intervals;
+  Eigen::Vector4d q0,q1,dq;
+  q0 << req.qStart[0],req.qStart[1],req.qStart[2],req.qStart[3];
+  q1 << req.qEnd[0],req.qEnd[1],req.qEnd[2],req.qEnd[3];
+  dq = quatRot(inverse(q0),q1);
+
+  for(int i=0;i<intervals;i++){
+    double ratio = ((double)i)/intervals;
+    double theta = acos(dq(3));
+    Eigen::Vector3d normal = dq.head(3).normalized();
+    Eigen::Vector4d dqPartial = Eigen::VectorXd::Zero(4);
+    dqPartial.head(3) << normal*sin(ratio*theta);
+    dqPartial(3) = cos(ratio*theta);
+    Eigen::VectorXd qProp = quatMath.quatRot(qOld,dqPartial);
+    res.qx.push_back(qProp(0));
+    res.qy.push_back(qProp(1));
+    res.qz.push_back(qProp(2));
+    res.qw.push_back(qProp(3));
+  }
+  return true;
 }
 
 int main(int argc, char** argv){
