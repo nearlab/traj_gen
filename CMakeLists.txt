@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   nearlab_msgs
   std_msgs
   roscpp
+  nearlab_utils
 )
 
 #find_package(Eigen3 3.3 REQUIRED NO_MODULE)
@@ -18,6 +19,7 @@ catkin_package(CATKIN_DEPENDS
   nearlab_msgs
   roscpp
   message_runtime
+  nearlab_utils
 )
 
 #########
@@ -32,9 +34,7 @@ include_directories(
 
 add_executable(traj_gen_node
                src/energyOptimal.cpp
-               src/trajGenNode.cpp
-               src/orbitPropagator.cpp
-               src/quatMath.cpp)
+               src/trajGenNode.cpp)
 
 set(EXEC_LIST traj_gen_node)
 foreach(EXEC_FILE ${EXEC_LIST})
