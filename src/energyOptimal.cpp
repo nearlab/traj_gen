@@ -1,15 +1,15 @@
 #include "energyOptimal.h"
 #include <unsupported/Eigen/MatrixFunctions>
 
-void energyOptimalWps(Eigen::Matrix3Xd& control, const Waypoint* wps, const double* times, const int len, const TrajParams& p){
+void energyOptimalWps(Eigen::Matrix3Xd& control, const Waypoint* wps, const double* times, const int len, const OrbitalParams& p){
 
 }
 //Given multiple waypoints "" "", genereate the optimal interim velocities
-void optimalVelocityAlg(Eigen::Matrix3Xd& control, const Waypoint* wps, const int len, const TrajParams& p){
+void optimalVelocityAlg(Eigen::Matrix3Xd& control, const Waypoint* wps, const int len, const OrbitalParams& p){
 
 }
 //Given two waypoints with start and end velocities, generate the optimal trajectory.
-void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const int& intervals, const TrajParams& p){
+void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const int& intervals, const OrbitalParams& p){
   double t0 = start.t;
   double tf = end.t;
   double tspan = tf-t0;
@@ -23,7 +23,7 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(6,6);
   B.block(3,3,3,3) = Eigen::MatrixXd::Identity(3,3)*( p.F*p.tau*p.tau/p.m/p.nu);
   
-  double dt = tspan/(intervals-1);
+  double dt = tspan/intervals;
 
   Eigen::MatrixXd W = Eigen::MatrixXd::Identity(6,6); //Controllability Gramian
   integrateGramian(W,A,B,t0,tf,1000);

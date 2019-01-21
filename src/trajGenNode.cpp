@@ -2,9 +2,9 @@
 
 #include <Eigen/Dense>
 
-#include "trajParams.h"
 #include "energyOptimal.h"
-#include "orbitPropagator.h"
+#include "nearlab_utils/orbitPropagator.h"
+#include "nearlab_utils/orbitalParams.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
 #include "nearlab_msgs/attitude_traj.h"
 #include "quatMath.h"
@@ -26,7 +26,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     vEnd(i) = req.vEnd[i];
   }
   ROS_INFO("Created vectors");
-  TrajParams params(req.sc_mass,req.sc_thrust,req.time_const,req.dist_const,rOrb,req.grav_param);
+  OrbitalParams params(req.sc_mass,req.sc_thrust,req.time_const,req.dist_const,rOrb,req.grav_param);
   ROS_INFO("Created Params");
   // Other stuff
   Waypoint wpStart(rStart,vStart,req.tStart);
@@ -38,13 +38,13 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   energyOptimal(control,wpStart,wpEnd,intervals,params);
   ROS_INFO("Finished trajectory generation");
 
-  Eigen::MatrixXd stateHist = Eigen::MatrixXd::Zero(6,intervals);
+  Eigen::MatrixXd stateHist = Eigen::MatrixXd::Zero(6,intervals+1);
 
   ROS_INFO("Starting trajectory propagation");
   cwProp(stateHist,rStart,vStart,control,req.tEnd,intervals,params);
   ROS_INFO("Finished trajectory propagation");
-  ROS_INFO_STREAM("FINAL STATE: "<<stateHist(0,intervals-1)<<", "<<stateHist(1,intervals-1));
-  double dt = (req.tEnd-req.tStart)/(intervals-1);
+  ROS_INFO_STREAM("FINAL STATE: "<<stateHist(0,intervals)<<", "<<stateHist(1,intervals));
+  double dt = (req.tEnd-req.tStart)/intervals;
   for(int i=0;i<intervals;i++){
     res.rx.push_back(stateHist(0,i));
     res.ry.push_back(stateHist(1,i));
