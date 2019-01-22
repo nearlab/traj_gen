@@ -1,5 +1,5 @@
-#include "nearlab_utils/orbitPropagator.h"
-#include "nearlab_utils/orbiatlParams.h"
+#include "orbitPropagator.h"
+#include "orbitalParams.h"
 #include <math.h>
 #include <cmath>
 //#include <../third_party/NumericalIntegration/NumericalIntegration.h>
@@ -16,7 +16,7 @@ public:
 //Given multiple waypoints with first and last having velocities, generate the optimal trajectory
 void energyOptimalWps(Eigen::Matrix3Xd control, const Waypoint* wps, const double* times, const int len, const OrbitalParams& p);
 //Given multiple waypoints "" "", genereate the optimal interim velocities
-void optimalVelocityAlg(Eigen::Matrix3Xd control, const Waypoint* wps, int len, const TrajParams& p);
+void optimalVelocityAlg(Eigen::Matrix3Xd control, const Waypoint* wps, int len, const OrbitalParams& p);
 //Given two waypoints with start and end velocities, generate the optimal trajectory.
 void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoint& end, const int& intervals, const OrbitalParams& p);
 

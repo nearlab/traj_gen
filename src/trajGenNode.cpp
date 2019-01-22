@@ -3,8 +3,8 @@
 #include <Eigen/Dense>
 
 #include "energyOptimal.h"
-#include "nearlab_utils/orbitPropagator.h"
-#include "nearlab_utils/orbitalParams.h"
+#include "orbitPropagator.h"
+#include "orbitalParams.h"
 #include "nearlab_msgs/energy_optimal_traj.h"
 #include "nearlab_msgs/attitude_traj.h"
 #include "quatMath.h"
