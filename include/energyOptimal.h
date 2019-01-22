@@ -1,5 +1,5 @@
 #include "orbitPropagator.h"
-#include "orbitalParams.h"
+#include "params.h"
 #include <math.h>
 #include <cmath>
 //#include <../third_party/NumericalIntegration/NumericalIntegration.h>
