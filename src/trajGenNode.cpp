@@ -52,9 +52,9 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
     res.vx.push_back(stateHist(3,i));
     res.vy.push_back(stateHist(4,i));
     res.vz.push_back(stateHist(5,i));
-    res.ux.push_back(control(3,i));
-    res.uy.push_back(control(4,i));
-    res.uz.push_back(control(5,i));
+    // res.ux.push_back(control(3,i));
+    // res.uy.push_back(control(4,i));
+    // res.uz.push_back(control(5,i));
     res.times.push_back(dt*i);
   }
   return true;
@@ -90,8 +90,8 @@ int main(int argc, char** argv){
   ros::NodeHandle nh;
   
   // Advertise service
-  ros::ServiceServer energyOptimalServer = nh.advertiseService("/traj_gen/energy_optimal_traj",callbackEnergyOptimalTraj);
-  ros::ServiceServer attitudeServer = nh.advertiseService("/traj_gen/attitude_traj",callbackAttitudeTraj);
+  ros::ServiceServer energyOptimalServer = nh.advertiseService("/orbot/space/energy_optimal_traj",callbackEnergyOptimalTraj);
+  ros::ServiceServer attitudeServer = nh.advertiseService("/orbot/space/attitude_traj",callbackAttitudeTraj);
   ROS_INFO("Ready to generate trajectories.");
   ros::spin();
 }
