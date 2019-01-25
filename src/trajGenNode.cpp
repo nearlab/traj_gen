@@ -88,17 +88,7 @@ bool callbackAttitudeTraj(nearlab_msgs::attitude_traj::Request& req, nearlab_msg
 int main(int argc, char** argv){
   ros::init(argc,argv,"traj_gen");
   ros::NodeHandle nh;
-
-  // nh.getParam("dt",dt);
-  // nh.getParam("sc_mass", m);
-  // nh.getParam("tau",tau);
-  // nh.getParam("nu",nu);
-  // nh.getParam("sc_thrust", F);
-  // nh.getParam("mu",mu);
-  // nh.getParam("initial_radius_x",rx);
-  // nh.getParam("initial_radius_y",ry);
-  // nh.getParam("initial_radius_z",rz);
-
+  
   // Advertise service
   ros::ServiceServer energyOptimalServer = nh.advertiseService("/traj_gen/energy_optimal_traj",callbackEnergyOptimalTraj);
   ros::ServiceServer attitudeServer = nh.advertiseService("/traj_gen/attitude_traj",callbackAttitudeTraj);
