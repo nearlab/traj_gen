@@ -5,7 +5,7 @@ rEnd: [100.0,0.0,0.0]
 vEnd: [0.0,0.0,0.0]
 tStart: 0.0
 tEnd: 40000.0
-intervals: 40000
+intervals: 400000
 grav_param: 398600000000000.0
 dist_const: 1
 sc_thrust: 0.1

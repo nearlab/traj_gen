@@ -26,13 +26,12 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
   double dt = tspan/intervals;
 
   Eigen::MatrixXd W = Eigen::MatrixXd::Identity(6,6); //Controllability Gramian
-  integrateGramian(W,A,B,t0,tf,1000);
+  integrateGramian(W,A,B,t0,tf,intervals);
   Eigen::MatrixXd Winv = W.inverse();
 
   Eigen::MatrixXd stm = (A*dt).exp();
   Eigen::MatrixXd stm_tf = (A*tspan).exp();
   Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
-  Eigen::MatrixXd sum = Eigen::MatrixXd::Zero(stm.rows(),stm.cols());
 
   Eigen::VectorXd x0 = Eigen::VectorXd::Zero(6);
   x0.head(3) << start.r;
@@ -48,7 +47,7 @@ void energyOptimal(Eigen::MatrixXd& control, const Waypoint& start, const Waypoi
 }
 
 void integrateGramian(Eigen::MatrixXd& W, const Eigen::MatrixXd& A, const Eigen::MatrixXd& B, const double& t0, const double& tf, const int& intervals){
-  double dt = (tf-t0)/(intervals-1);
+  double dt = (tf-t0)/(intervals);
   Eigen::MatrixXd stm = (A*dt).exp();
   Eigen::MatrixXd stm_i = Eigen::MatrixXd::Identity(stm.rows(),stm.cols());
   Eigen::MatrixXd sum = Eigen::MatrixXd::Zero(stm.rows(),stm.cols());
