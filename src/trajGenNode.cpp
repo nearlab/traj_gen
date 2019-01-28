@@ -37,7 +37,7 @@ bool callbackEnergyOptimalTraj(nearlab_msgs::energy_optimal_traj::Request& req, 
   ROS_INFO("Starting trajectory generation");
   energyOptimal(control,wpStart,wpEnd,intervals,params);
   ROS_INFO("Finished trajectory generation");
-
+  ROS_INFO_STREAM("Maximum Control Input: "<<control.maxCoeff());
   Eigen::MatrixXd stateHist = Eigen::MatrixXd::Zero(6,intervals+1);
 
   ROS_INFO("Starting trajectory propagation");
